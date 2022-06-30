@@ -11,8 +11,8 @@ class Tag(models.Model):
 
 
 class ProblemDescription(models.Model):
-    prob_statment = models.CharField(max_length=1000)
-    prob_solution = models.CharField(max_length=10000)
+    prob_statment = models.CharField(max_length=1000, blank=True)
+    prob_solution = models.CharField(max_length=10000, blank=True)
 
     def __str__(self):
         return self.prob_statment[:40]+"..."
@@ -30,6 +30,8 @@ class Problem(models.Model):
     difficulty = models.CharField(max_length=10)
     accepted_submissions = models.IntegerField(default=0)
     totalsubmissions = models.IntegerField(default=0)
+    test_cases = models.OneToOneField(TestCase, on_delete=models.CASCADE, null=True)
+    problem_desc = models.OneToOneField(ProblemDescription, on_delete=models.CASCADE, null=True)
     # tags = models.ForeignKey(Tag, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
