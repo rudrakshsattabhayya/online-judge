@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
 from .serializers import ListProblemsSerializers, TagsSerializers, ShowProblemDescSerializers
-from .models import Problem, Tag
+from .models import Problem, Tag, ProblemDescription, TestCase
 
 # Create your views here.
 
@@ -60,5 +60,42 @@ class ListTagsView(APIView):
         available_tags = Tag.objects.all()
         ser_data = TagsSerializers(available_tags, many=True)
         return JsonResponse({"response": ser_data.data, "status": status.HTTP_200_OK})
+
+    def post(self, request):
+        pass
+
+
+class CreateProblemView(APIView):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        data = request.data
+
+        prob_desc = ProblemDescription(prob_statement=data["prob_statement"], prob_solution=data["prob_solution"])
+        prob_desc.save()
+        test_case = TestCase(inputs=data["input"], outputs=data["output"])
+        test_case.save()
+
+        problem = Problem(prob_name=data["prob_name"], difficulty=data["difficulty"], accepted_submissions=data["accepted_submissions"], totalsubmissions=data["total_submissions"])
+        problem.save()
+        problem.prob_desc = prob_desc
+        problem.test_case = test_case
+
+        tagslist = data["tags"]
+        tags_queryset = Tag.objects.all()
+        for tag in tagslist:
+            x = tags_queryset.filter(tag_name=tag)
+            y=x
+            if(not x):
+                y = Tag(tag_name=tag)
+                y.save()
+            else:
+                y=x[0]
+            
+            problem.tags.add(y)
+
+        problem.save()
+        return JsonResponse({"status": status.HTTP_201_CREATED, "QuestionId": problem.id})
 
 

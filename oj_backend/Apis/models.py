@@ -11,11 +11,11 @@ class Tag(models.Model):
 
 
 class ProblemDescription(models.Model):
-    prob_statment = models.TextField(max_length=1000, blank=True)
+    prob_statement = models.TextField(max_length=1000, blank=True)
     prob_solution = models.TextField(max_length=10000, blank=True)
 
     def __str__(self):
-        return self.prob_statment[:40]+"..."
+        return self.prob_statement[:40]+"..."
 
 
 class TestCase(models.Model):
