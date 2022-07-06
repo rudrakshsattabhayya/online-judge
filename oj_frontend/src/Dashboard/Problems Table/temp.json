@@ -1,0 +1,20 @@
+[
+    {
+        "id": "1",
+        "problem": "Optimal Path",
+        "Difficulty": 800,
+        "Accuracy": 90
+    },
+    {
+        "id": "2",
+        "problem": "Optimal Path2",
+        "Difficulty": 900,
+        "Accuracy": 80
+    },
+    {
+        "id": "3",
+        "problem": "Optimal Path3",
+        "Difficulty": 1000,
+        "Accuracy": 70
+    }
+]

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Problem, Tag
+from .models import Problem, Tag, User
 
 
 class TagsSerializers(serializers.ModelSerializer):
@@ -20,3 +20,8 @@ class ListProblemsSerializers(serializers.ModelSerializer):
     class Meta:
         model = Problem
         exclude = ['problem_desc', 'test_cases']
+
+class UserSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'

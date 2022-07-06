@@ -40,3 +40,22 @@ class Problem(models.Model):
     class Meta:
         verbose_name_plural = "Problems"
 
+
+
+#User Model
+
+class UserSubmission(models.Model):
+    problem = models.OneToOneField(Problem, on_delete = models.CASCADE, null=True)
+    submission = ArrayField(models.FileField(upload_to="submissions"))
+
+class User(models.Model):
+    name = models.CharField(max_length=50, default="name")
+    email = models.EmailField(max_length=50, default="email@email.com")
+    username = models.CharField(max_length=20, default="username")
+    picture = models.URLField(max_length=100, default="http://www.example.com")
+    submissions = models.ManyToManyField(UserSubmission)
+
+    def __str__(self):
+        return self.username
+
+
