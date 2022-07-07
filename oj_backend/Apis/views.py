@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
-from .serializers import ListProblemsSerializers, TagsSerializers, ShowProblemDescSerializers
-from .models import Problem, Tag, ProblemDescription, TestCase, User
+from .serializers import ListProblemsSerializers, TagsSerializers, ShowProblemDescSerializers, UserSerializers
+from .models import Problem, Tag, ProblemDescription, TestCase, User, CodeFile, OutputFile, UserSubmission
 
 # Create your views here.
 
@@ -90,6 +90,41 @@ class SubmitProblemView(APIView):
         pass
     
     def post(self, request):
+        #Remember file name should be unique
+        email = request.data["email"]
+        codefile = request.FILES["codeFile"]
+        submitTime = request.data["submitTime"]
+        problemId = request.data["problemId"]
+
+        codeFilequery = CodeFile(file=codefile, time=submitTime)
+        codeFilequery.save()
+
+        problem = Problem.objects.filter(id=problemId).first()
+
+        userSubmissionquery = UserSubmission()
+        userSubmissionquery.save()
+        userSubmissionquery.problem.add(problem)
+        userSubmissionquery.submission.add(codeFilequery)
+        userSubmissionquery.save()
+
+        user = User.objects.filter(email=email).first()
+        print(user)
+        user.submissions.add(userSubmissionquery)
+        user.save()
+
+        ser_data = UserSerializers(user)
+        # print(ser_data)
+
+        return JsonResponse({"data": ser_data.data})
+        
+
+
+class CreateUserNameView(APIView):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        #Remember no spaces
         pass
 
 
@@ -112,7 +147,7 @@ class CreateProblemView(APIView):
         problem.prob_desc = prob_desc
         problem.test_case = test_case
 
-        tagslist = data["tags"]
+        tagslist = data["tags"].split(",")
         tags_queryset = Tag.objects.all()
         for tag in tagslist:
             x = tags_queryset.filter(tag_name=tag)
@@ -126,4 +161,4 @@ class CreateProblemView(APIView):
             problem.tags.add(y)
 
         problem.save()
-        return JsonResponse({"status": status.HTTP_201_CREATED, "QuestionId": problem.id})
+        return JsonResponse({"QuestionId": problem.id})

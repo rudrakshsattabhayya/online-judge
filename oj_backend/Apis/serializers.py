@@ -1,5 +1,6 @@
+from dataclasses import field
 from rest_framework import serializers
-from .models import Problem, Tag, User
+from .models import Problem, Tag, User, UserSubmission, User, CodeFile, OutputFile
 
 
 class TagsSerializers(serializers.ModelSerializer):
@@ -21,7 +22,19 @@ class ListProblemsSerializers(serializers.ModelSerializer):
         model = Problem
         exclude = ['problem_desc', 'test_cases']
 
+class ProblemNameSerializers(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    class Meta:
+        model: Problem
+
+class UserSubmissionSerializers(serializers.ModelSerializer):
+    problem = ProblemNameSerializers(many=True) 
+    class Meta:
+        model: UserSubmission
+        fields = ["problem"]
+
 class UserSerializers(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = '__all__'

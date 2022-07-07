@@ -43,13 +43,18 @@ class Problem(models.Model):
 
 class CodeFile(models.Model):
     file = models.FileField(upload_to="submissions")
+    time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.time.strftime("%H:%M:%S")
 
 class OutputFile(models.Model):
     file = models.FileField(upload_to="user_outputs")
 
 class UserSubmission(models.Model):
-    problem = models.OneToOneField(Problem, on_delete = models.CASCADE, null=True)
-    submission = models.ForeignKey(CodeFile, on_delete = models.CASCADE, related_name = "user")
+    problem = models.ManyToManyField(Problem)
+    submission = models.ManyToManyField(CodeFile, related_name = "user")
+
 
 class User(models.Model):
     name = models.CharField(max_length=50, default="name")
