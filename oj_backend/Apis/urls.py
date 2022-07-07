@@ -10,6 +10,7 @@ urlpatterns = [
     #User API's
     path('sign-in', views.SignInView.as_view()),
     path('submit-problem',views.SubmitProblemView.as_view()),
+    path('change-username', views.ChangeUserNameView.as_view()),
 
     #Admin API's
     path('create-problem', views.CreateProblemView.as_view()),

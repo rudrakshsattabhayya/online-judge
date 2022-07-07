@@ -119,13 +119,21 @@ class SubmitProblemView(APIView):
         
 
 
-class CreateUserNameView(APIView):
+class ChangeUserNameView(APIView):
     def get(self, request):
         pass
 
     def post(self, request):
         #Remember no spaces
-        pass
+        new_user_name = request.data["new_user_name"]
+        email = request.data["email"]
+        user = User.objects.filter(email=email).first()
+        user.username = new_user_name
+        user.save()
+        
+        ser_data = UserSerializers(user)
+        return JsonResponse({"data": ser_data.data})
+        
 
 
 #Admin API's
