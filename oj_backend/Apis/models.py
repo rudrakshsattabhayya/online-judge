@@ -19,11 +19,8 @@ class ProblemDescription(models.Model):
 
 
 class TestCase(models.Model):
-    inputs = models.TextField(max_length=1000)
-    outputs = models.TextField(max_length=1000)
-
-    def __str__(self):
-        return self.inputs
+    inputs = models.FileField(upload_to="problems/inputs")
+    outputs = models.FileField(upload_to="problems/outputs")
 
 class Problem(models.Model):
     prob_name = models.CharField(max_length=100)
@@ -44,12 +41,15 @@ class Problem(models.Model):
 
 #User Model
 
-class FileFieldView(models.Model):
+class CodeFile(models.Model):
     file = models.FileField(upload_to="submissions")
+
+class OutputFile(models.Model):
+    file = models.FileField(upload_to="user_outputs")
 
 class UserSubmission(models.Model):
     problem = models.OneToOneField(Problem, on_delete = models.CASCADE, null=True)
-    submission = models.ForeignKey(FileFieldView, on_delete = models.CASCADE, related_name = "user")
+    submission = models.ForeignKey(CodeFile, on_delete = models.CASCADE, related_name = "user")
 
 class User(models.Model):
     name = models.CharField(max_length=50, default="name")
@@ -57,6 +57,7 @@ class User(models.Model):
     username = models.CharField(max_length=20, default="username")
     picture = models.URLField(max_length=100, default="http://www.example.com")
     submissions = models.ManyToManyField(UserSubmission)
+    op_submissions = models.ManyToManyField(OutputFile)
 
     def __str__(self):
         return self.username

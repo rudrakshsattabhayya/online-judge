@@ -1,0 +1,14 @@
+#Output1
+4
+3
+4
+1
+#Output2
+5 3 4
+3 2
+1 2
+1
+#Output3
+3
+#Output4
+
