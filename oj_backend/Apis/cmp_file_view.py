@@ -1,5 +1,3 @@
-import linecache
-
 # reading files
 f1 = open("C:/Users/rudra/Desktop/output1.txt", "r")  
 f2 = open("C:/Users/rudra/Desktop/output2.txt", "r")  

@@ -44,9 +44,12 @@ class Problem(models.Model):
 
 #User Model
 
+class FileFieldView(models.Model):
+    file = models.FileField(upload_to="submissions")
+
 class UserSubmission(models.Model):
     problem = models.OneToOneField(Problem, on_delete = models.CASCADE, null=True)
-    submission = ArrayField(models.FileField(upload_to="submissions"))
+    submission = models.ForeignKey(FileFieldView, on_delete = models.CASCADE, related_name = "user")
 
 class User(models.Model):
     name = models.CharField(max_length=50, default="name")

@@ -110,7 +110,6 @@ class SignInView(APIView):
         picture = data["picture"]
 
         user = User.objects.filter(name=name, email=email)
-        
         if(not user):
             new_user = User(name=name, email=email, picture=picture)
             new_user.save()
