@@ -1,6 +1,9 @@
 .App {
   text-align: center;
 }
+.App-body {
+  background-image: url("../public/login_bg.png");
+}
 
 .App-logo {
   height: 40vmin;

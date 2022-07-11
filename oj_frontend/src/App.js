@@ -1,21 +1,13 @@
 import './App.css';
 import ResponsiveAppBar from './Navbar/navbar';
-import FilterBox from './Dashboard/filterBox'
-import ChooseFileBox from './Dashboard/box';
-import {Table} from './Dashboard/Problems Table/Table'
-import {GoogleAuthButton} from './Login Page/googleAuthButton'
+import Loginpage from './Login Page/loginpage';
+import Dashboard from './Dashboard/dashboard';
 function App() {
   return (
-    <div className="App">
-    <ResponsiveAppBar />
-      <header> 
-
-      {/* <FilterBox /> */}
-      {/* <ChooseFileBox /> */}
-      {/* <Table /> */}
-      <GoogleAuthButton />
-      </header>
-    </div>
+    <>
+      <ResponsiveAppBar></ResponsiveAppBar>
+      <Dashboard/>
+    </>
   );
 }
 

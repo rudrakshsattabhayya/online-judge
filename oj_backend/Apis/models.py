@@ -63,6 +63,7 @@ class User(models.Model):
     picture = models.URLField(max_length=100, default="http://www.example.com")
     submissions = models.ManyToManyField(UserSubmission)
     op_submissions = models.ManyToManyField(OutputFile)
+    jwt = models.CharField(max_length=500, default="", null=True)
 
     def __str__(self):
         return self.username

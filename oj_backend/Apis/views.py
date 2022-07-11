@@ -3,8 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
-from .serializers import ListProblemsSerializers, TagsSerializers, ShowProblemDescSerializers, UserSerializers
+from .serializers import ListProblemsSerializers, TagsSerializers, ShowProblemDescSerializers, UserSerializers, UserSerializerForAuth
 from .models import Problem, Tag, ProblemDescription, TestCase, User, CodeFile, OutputFile, UserSubmission
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
@@ -59,7 +62,6 @@ class ListTagsView(APIView):
     def get(self, request):
         available_tags = Tag.objects.all()
         ser_data = TagsSerializers(available_tags, many=True)
-        return JsonResponse({"response": ser_data.data, "status": status.HTTP_200_OK})
 
     def post(self, request):
         pass
@@ -76,14 +78,19 @@ class SignInView(APIView):
         email = data["email"]
         picture = data["picture"]
 
-        user = User.objects.filter(name=name, email=email)
+        user = User.objects.filter(name=name, email=email).first()
+
+        userStatus = "forHttpcode"
         if(not user):
             new_user = User(name=name, email=email, picture=picture)
             new_user.save()
-            return JsonResponse({"user": "created","name": name, "email": email, "picture": picture})
+            userStatus = status.HTTP_201_CREATED
         else:
-            return JsonResponse({"user": "found","name": name, "email": email, "picture": picture})
+            user.picture = picture
+            user.save()
+            userStatus = status.HTTP_200_OK
 
+        return JsonResponse({"status":userStatus})
 
 class SubmitProblemView(APIView):
     def get(self, request):
@@ -170,3 +177,16 @@ class CreateProblemView(APIView):
 
         problem.save()
         return JsonResponse({"QuestionId": problem.id})
+
+
+
+
+
+
+
+# class UserAPIView(RetrieveAPIView):
+#     permission_classes = (IsAuthenticated,)
+#     serializer_class = UserSerializerForAuth
+
+#     def get_object(self):
+#         return self.request.user

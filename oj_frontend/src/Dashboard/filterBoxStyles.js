@@ -3,7 +3,7 @@ import {makeStyles} from "@mui/styles"
 const useStyles = makeStyles((theme) => ({
     filterBox: {
             margin: "0.5rem",
-            width: "17%",
+            width: "80%",
             border: "2px solid",
             borderRadius: "0.5rem",
             padding: "0.5rem",

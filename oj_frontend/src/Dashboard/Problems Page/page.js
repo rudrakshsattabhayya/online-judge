@@ -1,7 +1,4 @@
 import React from "react";
-import useStyles from "./dashboardstyles";
-import FilterBox from "./filterBox";
-import { Table } from "./Problems Table/Table";
 
 const Dashboard = () => {
   const classes = useStyles();
