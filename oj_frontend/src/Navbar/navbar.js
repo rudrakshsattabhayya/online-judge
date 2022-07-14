@@ -20,7 +20,7 @@ const settings = ['Dark Mode','Dashboard', 'Logout'];
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [bgColor, updateBgColor] = React.useState("black")
+  const [bgColor, updateBgColor] = React.useState("#180A0A")
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);

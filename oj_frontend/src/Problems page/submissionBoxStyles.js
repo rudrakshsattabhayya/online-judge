@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "0.2rem",
   },
   pastsubmissionBox: {
-    marginBottom: "1rem"
+    marginBottom: "1rem",
   },
   pastsubrow: {
     display: "grid",
@@ -23,17 +23,16 @@ const useStyles = makeStyles((theme) => ({
   },
   pastsubrowsr: {
     border: "1px solid #ddd",
-   textAlign: "center",
+    textAlign: "center",
   },
   pastsubrowtime: {
     border: "1px solid #ddd",
-    paddingLeft: "0.5rem"
+    paddingLeft: "0.5rem",
   },
-  pastsubrowlink:{
+  pastsubrowlink: {
     border: "1px solid #ddd",
     textAlign: "center",
-  }
-  
+  },
 }));
 
 export default useStyles;
