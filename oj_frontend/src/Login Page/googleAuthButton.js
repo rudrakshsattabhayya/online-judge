@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import postMethod from "../api";
+import postMethod from "../Apis/postApi";
 import { Navigate, useNavigate } from "react-router-dom";
 import useStyles from "./loginpagestyles";
 

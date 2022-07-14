@@ -9,7 +9,6 @@ const postMethod = async (obj,route) => {
           ...obj,
       },
     });
-    // console.log(response)
     return response;
   } catch (error) {
     console.log(error);
