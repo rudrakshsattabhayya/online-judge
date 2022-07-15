@@ -8,6 +8,7 @@ from .models import Problem, Tag, ProblemDescription, TestCase, User, CodeFile, 
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+import os, filecmp
 
 # Create your views here.
 
@@ -99,7 +100,7 @@ class SubmitProblemView(APIView):
     def post(self, request):
         #Remember file name should be unique
         email = request.data["email"]
-        codefile = request.FILES["codeFile"]
+        codefile = request.FILES["cppfile"]
         submitTime = request.data["submitTime"]
         problemId = request.data["problemId"]
 
@@ -108,6 +109,29 @@ class SubmitProblemView(APIView):
 
         problem = Problem.objects.filter(id=problemId).first()
 
+        commonpath = "C:/Users/rudra/Desktop/WebDevelopment/online-judge/oj_backend/Uploads/"
+        codefilepath = str(codeFilequery.file)
+        inputfilepath = str(problem.test_cases.inputs)
+        outputfilepath = f"{commonpath}{str(problem.test_cases.outputs)}"
+        
+        x = codefilepath.split(".cpp")[0]
+        x = x.split("submissions/")[1]
+
+        useroutputpath = f"{commonpath}user_outputs/{x}.txt"
+        
+        os.system(f"g++ {commonpath}{codefilepath}")
+        os.system(f"a.exe < {commonpath}{inputfilepath} > {useroutputpath}")
+
+        verdict = "verdict"
+        problem.totalsubmissions = problem.totalsubmissions + 1
+        if(filecmp.cmp(outputfilepath, useroutputpath, shallow=False)):
+            verdict = "Accepted"
+            problem.accepted_submissions = problem.accepted_submissions+1
+        else:
+            verdict = "Rejected"
+
+        problem.save()
+        
         userSubmissionquery = UserSubmission()
         userSubmissionquery.save()
         userSubmissionquery.problem.add(problem)
@@ -115,14 +139,12 @@ class SubmitProblemView(APIView):
         userSubmissionquery.save()
 
         user = User.objects.filter(email=email).first()
-        print(user)
         user.submissions.add(userSubmissionquery)
         user.save()
 
         ser_data = UserSerializers(user)
-        # print(ser_data)
 
-        return JsonResponse({"data": ser_data.data})
+        return JsonResponse({"data": ser_data.data, "verdict": verdict})
         
 
 
@@ -184,9 +206,9 @@ class CreateProblemView(APIView):
 
 
 
-# class UserAPIView(RetrieveAPIView):
-#     permission_classes = (IsAuthenticated,)
-#     serializer_class = UserSerializerForAuth
+class UserAPIView(RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializerForAuth
 
-#     def get_object(self):
-#         return self.request.user
+    def get_object(self):
+        return self.request.user
